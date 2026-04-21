@@ -31,11 +31,12 @@ void button_pressed_toggle()
 //************************************ */
 void toggle_access()
 {
+    uart_puts("Get here ?");
     millis_t timer = millis_get();
     PORTB ^= (1 << GREEN_LED);
-
-    while ((millis_t)(millis_get() - timer) < 1500);
-
+    
+    while ((millis_t)(millis_get() - timer) < 1500){}
+    
     PORTB ^= (1 << GREEN_LED);
 }
 

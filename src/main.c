@@ -8,8 +8,9 @@
 #include "../include/millis.h"
 #include "../include/led.h"
 #include "../include/system.h"
-#include "../include/utills.h"
+#include "../include/helpers.h"
 #include "../include/system_state.h"
+
 int main(void)
 {
     keypad_init();
@@ -18,8 +19,8 @@ int main(void)
     uart_init(103);
     millis_init();
     led_init();
-    sei();
     uart_puts("System startat\r\n");
     system_state_init();
+    sei();
     run_system();
 }

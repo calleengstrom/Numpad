@@ -121,3 +121,7 @@ char keypad_get_key_debounced(void)
 
     return 0;
 }
+
+uint8_t key_pressed(){
+    return keypad_get_key_debounced();
+}

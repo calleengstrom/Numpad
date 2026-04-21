@@ -3,12 +3,12 @@
 #include <avr/power.h>
 #include <util/atomic.h>
 #include "../include/system_state.h"
-
+#include "../include/uart.h"
 static volatile SYSTEM_STATE system_state;
 
 void system_state_init()
 {
-    system_state = IDLE;
+    system_state = INPUT_AWIT;
 }
 
 SYSTEM_STATE get_system_state()

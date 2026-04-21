@@ -17,10 +17,14 @@ BUILD_DIR = build
 TARGET = main
 
 # Hämta alla .c filer
-SRC = $(wildcard $(SRC_DIR)/*.c)
+UTILS_DIR = utils
+
+SRC = $(wildcard $(SRC_DIR)/*.c) \
+      $(wildcard $(UTILS_DIR)/*.c)
 
 # Objektfiler
-OBJ = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC))
+OBJ = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(wildcard $(SRC_DIR)/*.c)) \
+      $(patsubst $(UTILS_DIR)/%.c,$(BUILD_DIR)/%.o,$(wildcard $(UTILS_DIR)/*.c))
 
 # Output
 ELF = $(BUILD_DIR)/$(TARGET).elf
@@ -45,6 +49,9 @@ $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.o: $(UTILS_DIR)/%.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Flash (ändra COM-port!)
