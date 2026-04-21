@@ -1,4 +1,3 @@
-#define F_CPU 16000000UL
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/power.h>
@@ -9,16 +8,7 @@
 #include "../include/led.h"
 #include "../include/system.h"
 #include "../include/utills.h"
-int main(void)
-{
-    keypad_init();
 
-    /* 9600 baud vid 16 MHz */
-    uart_init(103);
-    millis_init();
-    led_init();
-    sei();
-    uart_puts("System startat\r\n");
-    
-    run_system();
+uint8_t key_pressed(){
+    return keypad_get_key_debounced();
 }

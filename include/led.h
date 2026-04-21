@@ -5,7 +5,8 @@
 #define RED_LED PB4
 
 void led_init();
-void toggle_red();
-void toggle_green();
+void button_pressed_toggle();
+void toggle_access();
+void toggle_denied();
 
 #endif
