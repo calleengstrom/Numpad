@@ -9,6 +9,7 @@
 #include "../include/led.h"
 #include "../include/system.h"
 #include "../include/utills.h"
+#include "../include/system_state.h"
 int main(void)
 {
     keypad_init();
@@ -19,6 +20,6 @@ int main(void)
     led_init();
     sei();
     uart_puts("System startat\r\n");
-    
+    system_state_init();
     run_system();
 }

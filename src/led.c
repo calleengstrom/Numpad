@@ -11,7 +11,7 @@ void led_init()
     DDRB |= (1 << RED_LED);
     DDRB |= (1 << GREEN_LED);
 
-    PORTB &= ~(1 << RED_LED);
+    PORTB |= (1 << RED_LED);
     PORTB &= ~(1 << GREEN_LED);
 }
 
@@ -21,7 +21,7 @@ void button_pressed_toggle()
 {
     millis_t timer = millis_get();
     
-    PORTB |= (1 << RED_LED);
+    PORTB ^= (1 << RED_LED);
 
     while ((millis_t)(millis_get() - timer) < 150);
 
