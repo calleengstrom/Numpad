@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "author": "Anonymous maker",
+    "editor": "wokwi",
+    "parts": [
+      { "type": "wokwi-arduino-uno", "id": "uno", "top": 0, "left": 0, "attrs": {} },
+      { "type": "wokwi-membrane-keypad", "id": "keypad1", "top": -462.8, "left": 53.6, "attrs": {} }
+    ],
+    "connections": [
+      [ "keypad1:R1", "uno:2", "green", [ "v57.6", "h86.4" ] ],
+      [ "keypad1:R2", "uno:3", "green", [ "v67.2", "h57.2" ] ],
+      [ "keypad1:R3", "uno:4", "green", [ "v76.8", "h47.7" ] ],
+      [ "keypad1:R4", "uno:5", "green", [ "v86.4", "h28.6" ] ],
+      [ "keypad1:C1", "uno:8", "blue", [ "v96", "h-19.3" ] ],
+      [ "keypad1:C2", "uno:9", "blue", [ "v105.6", "h-38.4" ] ],
+      [ "keypad1:C3", "uno:10", "blue", [ "v105.6", "h-0.15", "v9.6", "h-57.6" ] ],
+      [ "keypad1:C4", "uno:11", "blue", [ "v124.8", "h-77.1", "v0" ] ]
+    ],
+    "dependencies": {}
+  }
