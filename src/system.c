@@ -16,12 +16,11 @@ static uint8_t counter_buttons_pressed = 0;
 static uint8_t combination_pressed[4];
 static uint8_t timer_reached = 0;
 static char pass_key[4] = {'1', '7', '7', '2'};
-static char last_key = 0;
 
 void run_system()
 {
     uint8_t end_point_reached = 0;
-    start_and_reset_system(&counter_buttons_pressed, combination_pressed, &last_key,&timer_reached);
+    start_and_reset_system(&counter_buttons_pressed, combination_pressed,&timer_reached);
     while (1)
     {
 
@@ -84,7 +83,7 @@ void run_system()
 
         if (end_point_reached && millis_delay(3000))
         {
-            start_and_reset_system(&counter_buttons_pressed, combination_pressed, &last_key,&timer_reached);
+            start_and_reset_system(&counter_buttons_pressed, combination_pressed, &timer_reached);
             toggle_idle();
             end_point_reached = 0;
         }
@@ -115,12 +114,11 @@ void start_input_frequnce()
 
     char key = key_pressed();
 
-    if (key == '*' && key != last_key)
+    if (key == '*')
     {
         wait_for_no_key();
         awit_input();
         uart_puts("\r\ninput frequnce started \r\n");
     }
 
-    last_key = key;
 }

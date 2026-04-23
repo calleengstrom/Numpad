@@ -21,8 +21,7 @@ static const char keypad_map[4][4] = {
     {'1', '2', '3', 'A'},
     {'4', '5', '6', 'B'},
     {'7', '8', '9', 'C'},
-    {'*', '0', '#', 'D'}
-};
+    {'*', '0', '#', 'D'}};
 
 void keypad_init(void)
 {
@@ -50,29 +49,33 @@ static void keypad_set_row_low(uint8_t row)
 
     switch (row)
     {
-        case 0:
-            PORTD &= ~(1 << PD2);
-            break;
-        case 1:
-            PORTD &= ~(1 << PD3);
-            break;
-        case 2:
-            PORTD &= ~(1 << PD4);
-            break;
-        case 3:
-            PORTD &= ~(1 << PD5);
-            break;
-        default:
-            break;
+    case 0:
+        PORTD &= ~(1 << PD2);
+        break;
+    case 1:
+        PORTD &= ~(1 << PD3);
+        break;
+    case 2:
+        PORTD &= ~(1 << PD4);
+        break;
+    case 3:
+        PORTD &= ~(1 << PD5);
+        break;
+    default:
+        break;
     }
 }
 
 static uint8_t keypad_read_column(void)
 {
-    if (!(PINB & (1 << PB0))) return 0;
-    if (!(PINB & (1 << PB1))) return 1;
-    if (!(PINB & (1 << PB2))) return 2;
-    if (!(PINB & (1 << PB3))) return 3;
+    if (!(PINB & (1 << PB0)))
+        return 0;
+    if (!(PINB & (1 << PB1)))
+        return 1;
+    if (!(PINB & (1 << PB2)))
+        return 2;
+    if (!(PINB & (1 << PB3)))
+        return 3;
 
     return 0xFF;
 }
@@ -121,6 +124,18 @@ char keypad_get_key_debounced(void)
     return 0;
 }
 
-uint8_t key_pressed(){
-    return keypad_get_key_debounced();
+static uint8_t last_key = 0;
+uint8_t key_pressed()
+{
+    uint8_t key = keypad_get_key();
+
+    if (key != 0 && key != last_key)
+    {
+        last_key = key;
+        return key;
+    }
+
+    last_key = key;
+
+    return 0;
 }
