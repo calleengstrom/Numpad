@@ -15,11 +15,12 @@ static millis_t input_timer = 0;
 static uint8_t counter_buttons_pressed = 0;
 static uint8_t combination_pressed[4];
 static char pass_key[4] = {'1', '7', '7', '2'};
+static char last_key = 0;
 
 void run_system()
 {
     uint8_t end_point_reached = 0;
-    start_and_reset_system(&counter_buttons_pressed,&combination_pressed[4]);
+    start_and_reset_system(&counter_buttons_pressed, combination_pressed,&last_key);
     while (1)
     {
 
@@ -81,7 +82,7 @@ void run_system()
 
         if (end_point_reached && millis_delay(3000))
         {
-            start_and_reset_system(&counter_buttons_pressed, &combination_pressed[4]);
+            start_and_reset_system(&counter_buttons_pressed, combination_pressed, &last_key);
             toggle_idle();
             end_point_reached = 0;
         }
@@ -90,8 +91,7 @@ void run_system()
 
 PIN_STATE pin_input_frequnce_state(uint8_t key_pressed)
 {
-    pin_state = WAITING;
-    if (key_pressed)
+    if (key_pressed && counter_buttons_pressed < 4)
     {
         combination_pressed[counter_buttons_pressed] = key_pressed;
         counter_buttons_pressed++;
@@ -108,12 +108,17 @@ PIN_STATE pin_input_frequnce_state(uint8_t key_pressed)
 
 void start_input_frequnce()
 {
+    pin_state = WAITING;
+
     char key = key_pressed();
-    if (key == '*')
+
+    if (key == '*' && key != last_key)
     {
-        wait_for_no_key(); 
+        wait_for_no_key();
         awit_input();
         input_timer = millis_get();
         uart_puts("\r\ninput frequnce started \r\n");
     }
+
+    last_key = key;
 }

@@ -109,7 +109,6 @@ char keypad_get_key_debounced(void)
 
         if (key == keypad_get_key())
         {
-            /* vänta tills knappen släpps */
             while (keypad_get_key() != 0)
             {
                 _delay_ms(5);
