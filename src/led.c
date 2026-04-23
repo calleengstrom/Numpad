@@ -5,6 +5,8 @@
 #include "../include/led.h"
 #include "../include/millis.h"
 #include "../include/uart.h"
+static volatile millis_t timer_now;
+static volatile millis_t timer_start;
 
 void led_init()
 {
@@ -13,42 +15,54 @@ void led_init()
 
     PORTB |= (1 << RED_LED);
     PORTB &= ~(1 << GREEN_LED);
+    timer_start = millis_get();
 }
 
 //************************************ */
 
-void button_pressed_toggle()
-{
-    millis_t timer = millis_get();
-    
-    PORTB ^= (1 << RED_LED);
+// void button_pressed_toggle()
+// {
+//     timer = millis_get();
 
-    while ((millis_t)(millis_get() - timer) < 150);
+//     PORTB ^= (1 << RED_LED);
 
-    PORTB ^= (1 << RED_LED);
-}
+//     while ((millis_t)(millis_get() - timer) < 150);
+
+//     PORTB ^= (1 << RED_LED);
+// }
 
 //************************************ */
 void toggle_access()
 {
-    uart_puts("Get here ?");
-    millis_t timer = millis_get();
-    PORTB ^= (1 << GREEN_LED);
-    
-    while ((millis_t)(millis_get() - timer) < 1500){}
-    
-    PORTB ^= (1 << GREEN_LED);
+    PORTB |= (1 << GREEN_LED);
+    PORTB &= ~(1 << RED_LED);
 }
 
 //************************************ */
 
-void toggle_denied(){
-    millis_t timer = millis_get();
-    PORTB ^= (1 << RED_LED);
-
-    while ((millis_t)(millis_get() - timer) < 1500);
-
-    PORTB ^= (1 << RED_LED);
+void toggle_denied()
+{
+    timer_now = millis_get();
+    if ((millis_t)(timer_now - timer_start) >= 1000)
+    {
+        PORTB ^= (1 << RED_LED);
+        timer_start = millis_get();
+    }
 }
 
 //************************************ */
+void toggle_idle()
+{
+    PORTB |= (1 << RED_LED);
+    PORTB &= ~(1 << GREEN_LED);
+}
+//************************************ */
+void toggle_input_awit()
+{
+    timer_now = millis_get();
+    if (timer_now - timer_start > 500)
+    {
+        PORTB ^= (1 << RED_LED);
+        timer_start = millis_get();
+    }
+}

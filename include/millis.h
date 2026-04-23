@@ -93,6 +93,7 @@
 
  void millis_wait_ms(millis_t ms);
 
+ uint8_t millis_delay(uint16_t time_ms);
 
  #ifdef __cplusplus
  }

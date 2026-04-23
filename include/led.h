@@ -8,5 +8,7 @@ void led_init();
 void button_pressed_toggle();
 void toggle_access();
 void toggle_denied();
+void toggle_idle();
+void toggle_input_awit();
 
 #endif

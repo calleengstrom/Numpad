@@ -6,6 +6,7 @@
 #include "../include/helpers.h"
 #include "../include/uart.h"
 #include "../include/system_state.h"
+#include "../include/millis.h"
 
 PIN_CHECK check_pin(char *pass_key , uint8_t *combination_pressed)
 {

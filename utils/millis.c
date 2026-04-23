@@ -196,3 +196,11 @@ ISR(ISR_VECT)
 {
 	++milliseconds;
 }
+
+uint8_t millis_delay(uint16_t time_ms){
+	millis_t timer = millis_get();
+	while ((millis_t)(millis_get() - timer) < time_ms){
+
+	}
+	return 1;
+}

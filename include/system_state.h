@@ -6,7 +6,8 @@ typedef enum
     IDLE,
     INPUT_AWIT,
     ACCESS_GRANTED,
-    ACCESS_DENIED
+    ACCESS_DENIED,
+    TIME_OUT
 } SYSTEM_STATE;
 
 void system_state_init();

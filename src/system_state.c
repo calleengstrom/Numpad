@@ -8,7 +8,7 @@ static volatile SYSTEM_STATE system_state;
 
 void system_state_init()
 {
-    system_state = INPUT_AWIT;
+    system_state = IDLE;
 }
 
 SYSTEM_STATE get_system_state()
