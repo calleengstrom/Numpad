@@ -7,18 +7,29 @@
 #include "../include/uart.h"
 #include "../include/system_state.h"
 #include "../include/millis.h"
-
-PIN_CHECK check_pin(char *pass_key , uint8_t *combination_pressed)
+#include "../include/keypad.h"
+PIN_STATE check_pin(char *pass_key , uint8_t *combination_pressed)
 {
     if (memcmp(pass_key, combination_pressed,4)==0)
     {
-        return ACCESS;
+        return PIN_CORRECT;
     }
-    return DENIED;
+    return PIN_INVALID;
 }
 
 
-void reset_loop(uint8_t *counter){
+void start_and_reset_system(uint8_t *counter,uint8_t *combination_pressed){
+    uart_puts("\r\nRESTING\r\n");
+    wait_for_no_key();
+    memset(combination_pressed, 0, 4);
     *counter = 0;
-    set_system_state(IDLE);
+    system_state_idle();
+    uart_puts("\r\nAwiat start frequnce \r\n");
+
+}
+
+void wait_for_no_key()
+{
+    while (key_pressed() != 0)
+        ;
 }

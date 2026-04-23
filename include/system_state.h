@@ -10,8 +10,15 @@ typedef enum
     TIME_OUT
 } SYSTEM_STATE;
 
-void system_state_init();
+void system_state_idle();
+void awit_input();
+void grant_access();
+void deny_access();
+void time_out_reached();
 SYSTEM_STATE get_system_state();
-void set_system_state(SYSTEM_STATE new_state);
+
+
+
+
 
 #endif

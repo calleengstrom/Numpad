@@ -20,16 +20,17 @@ void led_init()
 
 //************************************ */
 
-// void button_pressed_toggle()
-// {
-//     timer = millis_get();
+void button_pressed_toggle()
+{
+    timer_now = millis_get();
 
-//     PORTB ^= (1 << RED_LED);
+    PORTB ^= (1 << GREEN_LED);
 
-//     while ((millis_t)(millis_get() - timer) < 150);
+    while ((millis_t)(millis_get() - timer_now) < 100)
+        ;
 
-//     PORTB ^= (1 << RED_LED);
-// }
+    PORTB ^= (1 << GREEN_LED);
+}
 
 //************************************ */
 void toggle_access()
@@ -65,4 +66,26 @@ void toggle_input_awit()
         PORTB ^= (1 << RED_LED);
         timer_start = millis_get();
     }
+}
+//************************************ */
+
+void toggle_timeout()
+{
+    uart_puts("\r\nstuck here ??\r\n");
+    timer_now = millis_get();
+
+    PORTB |= (1 << RED_LED);
+    PORTB |= (1<< GREEN_LED);
+    while ((millis_get() - timer_now) < 100);
+    PORTB &= (1 << RED_LED);
+    PORTB &= (1<< GREEN_LED);
+
+    timer_now = millis_get();
+    
+    PORTB |= (1 << RED_LED);
+    PORTB |= (1<< GREEN_LED);
+    while ((millis_get() - timer_now) < 100);
+    PORTB &= (1 << RED_LED);
+    PORTB &= (1<< GREEN_LED);
+    
 }

@@ -10,5 +10,6 @@ void toggle_access();
 void toggle_denied();
 void toggle_idle();
 void toggle_input_awit();
+void toggle_timeout();
 
 #endif

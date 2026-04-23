@@ -20,7 +20,7 @@ int main(void)
     millis_init();
     led_init();
     uart_puts("System startat\r\n");
-    system_state_init();
+    system_state_idle();
     sei();
     run_system();
 }
