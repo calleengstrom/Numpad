@@ -43,12 +43,9 @@ void toggle_access()
 
 void toggle_denied()
 {
-    timer_now = millis_get();
-    if ((millis_t)(timer_now - timer_start) >= 1000)
-    {
-        PORTB ^= (1 << RED_LED);
-        timer_start = millis_get();
-    }
+    PORTB &= ~(1 << GREEN_LED);
+    PORTB &= ~(1 << RED_LED);
+
 }
 
 //************************************ */
@@ -71,21 +68,6 @@ void toggle_input_awit()
 
 void toggle_timeout()
 {
-    uart_puts("\r\nstuck here ??\r\n");
-    timer_now = millis_get();
-
     PORTB |= (1 << RED_LED);
-    PORTB |= (1<< GREEN_LED);
-    while ((millis_get() - timer_now) < 100);
-    PORTB &= (1 << RED_LED);
-    PORTB &= (1<< GREEN_LED);
-
-    timer_now = millis_get();
-    
-    PORTB |= (1 << RED_LED);
-    PORTB |= (1<< GREEN_LED);
-    while ((millis_get() - timer_now) < 100);
-    PORTB &= (1 << RED_LED);
-    PORTB &= (1<< GREEN_LED);
-    
+    PORTB |= (1 << GREEN_LED);
 }

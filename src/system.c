@@ -14,13 +14,14 @@ PIN_STATE pin_state = WAITING;
 static millis_t input_timer = 0;
 static uint8_t counter_buttons_pressed = 0;
 static uint8_t combination_pressed[4];
+static uint8_t timer_reached = 0;
 static char pass_key[4] = {'1', '7', '7', '2'};
 static char last_key = 0;
 
 void run_system()
 {
     uint8_t end_point_reached = 0;
-    start_and_reset_system(&counter_buttons_pressed, combination_pressed,&last_key);
+    start_and_reset_system(&counter_buttons_pressed, combination_pressed, &last_key,&timer_reached);
     while (1)
     {
 
@@ -32,27 +33,28 @@ void run_system()
 
         case INPUT_AWIT:
 
-            do
+            toggle_input_awit();
+            pin_state = pin_input_frequnce_state(key_pressed());
+            if (pin_state == PIN_CORRECT)
             {
-                toggle_input_awit();
-                pin_state = pin_input_frequnce_state(key_pressed());
-                if (pin_state == PIN_CORRECT)
-                {
-                    uart_puts("\r\nCorrect pin\r\n");
-                    grant_access();
-                    break;
-                }
-                else if (pin_state == PIN_INVALID)
-                {
-                    uart_puts("\r\nInvalid pin\r\n");
+                uart_puts("\r\nCorrect pin\r\n");
+                grant_access();
+                break;
+            }
+            else if (pin_state == PIN_INVALID)
+            {
+                uart_puts("\r\nInvalid pin\r\n");
 
-                    deny_access();
-                    break;
-                }
+                deny_access();
+                break;
+            }
 
-            } while ((millis_get() - input_timer) < INPUT_TIMER_LIMIT);
-
-            if (pin_state == WAITING)
+            
+            if ((millis_get() - input_timer) > INPUT_TIMER_LIMIT)
+            {
+                timer_reached = 1;
+            }
+            if (pin_state == WAITING && timer_reached)
             {
                 uart_puts("\r\n!TIME OUT REACHED!\r\n");
                 time_out_reached();
@@ -82,7 +84,7 @@ void run_system()
 
         if (end_point_reached && millis_delay(3000))
         {
-            start_and_reset_system(&counter_buttons_pressed, combination_pressed, &last_key);
+            start_and_reset_system(&counter_buttons_pressed, combination_pressed, &last_key,&timer_reached);
             toggle_idle();
             end_point_reached = 0;
         }
@@ -109,6 +111,7 @@ PIN_STATE pin_input_frequnce_state(uint8_t key_pressed)
 void start_input_frequnce()
 {
     pin_state = WAITING;
+    input_timer = millis_get();
 
     char key = key_pressed();
 
@@ -116,7 +119,6 @@ void start_input_frequnce()
     {
         wait_for_no_key();
         awit_input();
-        input_timer = millis_get();
         uart_puts("\r\ninput frequnce started \r\n");
     }
 

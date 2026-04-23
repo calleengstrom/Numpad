@@ -18,11 +18,12 @@ PIN_STATE check_pin(char *pass_key , uint8_t *combination_pressed)
 }
 
 
-void start_and_reset_system(uint8_t *counter,uint8_t *combination_pressed, char *last_key){
+void start_and_reset_system(uint8_t *counter,uint8_t *combination_pressed, char *last_key,uint8_t *timer_reached){
     uart_puts("\r\nRESTING\r\n");
     wait_for_no_key();
     memset(combination_pressed, 0, 4);
     *counter = 0;
+    *timer_reached = 0;
     system_state_idle();
     uart_puts("\r\nAwiat start frequnce \r\n");
     *last_key = 0;
