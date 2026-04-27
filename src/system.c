@@ -8,6 +8,7 @@
 #include "../include/led.h"
 #include "../include/system.h"
 #include "../include/system_state.h"
+#include "../include/terminal.h"
 
 #define INPUT_TIMER_LIMIT 5000
 PIN_STATE pin_state = WAITING;
@@ -28,6 +29,7 @@ void run_system()
         {
         case IDLE:
             start_input_frequnce();
+            
             break;
 
         case INPUT_AWIT:

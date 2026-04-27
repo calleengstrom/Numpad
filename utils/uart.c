@@ -7,17 +7,6 @@
 #define BAUD 9600UL
 #define UBRR_VALUE ((F_CPU / (16UL * BAUD)) - 1UL)
 
-void uart_init(uint16_t ubrr)
-{
-    UBRR0H = (uint8_t)(ubrr >> 8);
-    UBRR0L = (uint8_t)(ubrr & 0xFF);
-
-    /* Enable transmitter */
-    UCSR0B = (1 << TXEN0);
-
-    /* 8 databitar, ingen paritet, 1 stoppbit */
-    UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
-}
 
 /* ---------- RX buffer ---------- */
 #define UART_RX_BUF_SIZE 32

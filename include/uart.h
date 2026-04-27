@@ -8,8 +8,6 @@
 
 void uart_init(void);
 void uart_tx_byte(uint8_t b);
-void uart_print_str(const char *s);
-void uart_print_u16(uint16_t v);
 char uart_rx_byte(void);
 uint8_t uart_rx_available(void);
 void uart_putchar(char c);

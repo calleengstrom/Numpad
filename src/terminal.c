@@ -2,6 +2,8 @@
 #include <avr/interrupt.h>
 #include <avr/power.h>
 #include <util/atomic.h>
+#include "../include/uart.h"
+
 
 uint8_t get_input(char *buf)
 {
@@ -21,9 +23,9 @@ uint8_t get_input(char *buf)
         {
 
             buf[idx] = '\0';
-            uart_print_str("Your input :");
-            uart_print_str(buf);
-            uart_print_str("\r\n");
+            uart_puts("Your input :");
+            uart_puts(buf);
+            uart_puts("\r\n");
             idx = 0;
             return 1;   // <-- färdigt
         }
