@@ -56,7 +56,7 @@ $(BUILD_DIR)/%.o: $(UTILS_DIR)/%.c | $(BUILD_DIR)
 
 # Flash (ändra COM-port!)
 flash: $(HEX)
-	$(AVRDUDE) -c arduino -p m328p -P COM3 -b 115200 -U flash:w:$(HEX):i
+	$(AVRDUDE) -c arduino -p m328p -P COM4 -b 115200 -U flash:w:$(HEX):i
 
 # Clean (funkar i Git Bash / WSL)
 clean:

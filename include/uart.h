@@ -1,9 +1,17 @@
 #ifndef UART_H
 #define UART_H
-
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/power.h>
+#include <util/atomic.h>
 #include <stdint.h>
 
-void uart_init(uint16_t ubrr);
+void uart_init(void);
+void uart_tx_byte(uint8_t b);
+void uart_print_str(const char *s);
+void uart_print_u16(uint16_t v);
+char uart_rx_byte(void);
+uint8_t uart_rx_available(void);
 void uart_putchar(char c);
 void uart_puts(const char *s);
 
