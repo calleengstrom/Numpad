@@ -1,6 +1,6 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
-#include "./helpers.h"
+#include "./pin_key.h"
 
 void run_system();
 PIN_STATE pin_input_frequnce_state(uint8_t key_pressed);

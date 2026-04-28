@@ -10,6 +10,7 @@
 #include "../include/system.h"
 #include "../include/helpers.h"
 #include "../include/system_state.h"
+#include "../include/pin_key.h"
 
 int main(void)
 {
@@ -22,5 +23,6 @@ int main(void)
     uart_puts("System startat\r\n");
     system_state_idle();
     sei();
+    pin_init("1772");
     run_system();
 }

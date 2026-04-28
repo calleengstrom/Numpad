@@ -9,13 +9,19 @@
 #include <string.h>
 #include "../include/uart.h"
 #include "../include/commando_eeprom.h"
-typedef struct
-{
- char *pass_key;
-} PIN_KEY;
+typedef enum{
+    PIN_INVALID,
+    PIN_CORRECT,
+    WAITING,
+}PIN_STATE;
 
-uint8_t check_old_pin(char *old_pin_input,char *current_pin);
-void uppdate_pin(char *new_pin,char *current_pin);
+PIN_STATE check_pin(char *pass_key , uint8_t *combination_pressed);
+
+
+void pin_init(char *init_pass_code);
+
+uint8_t check_current_pin(char *old_pin_input);
+void uppdate_pin(char *new_pin);
 uint8_t valid_check_new_pin(char *new_pin);
 
 #endif

@@ -19,14 +19,14 @@ PIN_STATE pin_state = WAITING;
 // emporm comando_new_pin -> "NEW PIN,1772,1337"
 static millis_t input_timer = 0;
 static uint8_t counter_buttons_pressed = 0;
-static uint8_t combination_pressed[4];
+static char combination_pressed[5];
 static uint8_t timer_reached = 0;
-static char pass_key[5] = {'1', '7', '7', '2', '\0'};
 static char new_pin_holder[3][8];
 static char buf[19];
 
 void run_system()
 {
+    
     uint8_t end_point_reached = 0;
     start_and_reset_system();
     while (1)
@@ -55,13 +55,13 @@ void run_system()
 
             toggle_input_awit();
             pin_state = pin_input_frequnce_state(key_pressed());
-            if (pin_state == PIN_CORRECT)
+            if (PIN_CORRECT == pin_state)
             {
                 uart_puts("\r\nCorrect pin\r\n");
                 grant_access();
                 break;
             }
-            else if (pin_state == PIN_INVALID)
+            else if (PIN_INVALID == pin_state)
             {
                 uart_puts("\r\nInvalid pin\r\n");
                 deny_access();
@@ -72,7 +72,7 @@ void run_system()
             {
                 timer_reached = 1;
             }
-            if (pin_state == WAITING && timer_reached)
+            if (WAITING == pin_state && timer_reached)
             {
                 uart_puts("\r\n!TIME OUT REACHED!\r\n");
                 time_out_reached();
@@ -99,11 +99,11 @@ void run_system()
 
         case CHANGE_PIN:
         {
-            if (check_old_pin(new_pin_holder[1], pass_key))
+            if (PIN_CORRECT == check_current_pin(new_pin_holder[1]))
             {
                 uart_puts("correct key \r\n");
                 if (valid_check_new_pin(new_pin_holder[2]))
-                    uppdate_pin(new_pin_holder[2], pass_key);
+                    uppdate_pin(new_pin_holder[2]);
             }
             end_point_reached = 1;
         }
@@ -131,8 +131,9 @@ PIN_STATE pin_input_frequnce_state(uint8_t key_pressed)
     }
 
     if (counter_buttons_pressed == 4)
-    {
-        pin_state = check_pin(pass_key, combination_pressed);
+    {   
+        combination_pressed[counter_buttons_pressed] = '\0';
+        pin_state = check_current_pin(combination_pressed);
     }
     return pin_state;
 }

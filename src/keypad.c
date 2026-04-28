@@ -124,10 +124,10 @@ char keypad_get_key_debounced(void)
     return 0;
 }
 
-static uint8_t last_key = 0;
-uint8_t key_pressed()
+static char last_key = '\0';
+char key_pressed()
 {
-    uint8_t key = keypad_get_key();
+    char key = keypad_get_key();
 
     if (key != 0 && key != last_key)
     {
@@ -138,4 +138,10 @@ uint8_t key_pressed()
     last_key = key;
 
     return 0;
+}
+
+void wait_for_no_key()
+{
+    while (key_pressed() != 0)
+        ;
 }
