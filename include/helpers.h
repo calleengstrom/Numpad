@@ -9,6 +9,6 @@ typedef enum{
 
 
 PIN_STATE check_pin(char *pass_key , uint8_t *combination_pressed);
-void start_and_reset_system(uint8_t *counter,uint8_t *combination_pressed, uint8_t *timer_reached);
+// void start_and_reset_system(uint8_t *counter,uint8_t *combination_pressed, uint8_t *timer_reached);
 void wait_for_no_key();
 #endif

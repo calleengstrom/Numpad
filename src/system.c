@@ -3,6 +3,7 @@
 #include <avr/power.h>
 #include <util/atomic.h>
 #include <avr/eeprom.h>
+#include <string.h>
 #include "../include/keypad.h"
 #include "../include/uart.h"
 #include "../include/millis.h"
@@ -21,13 +22,13 @@ static uint8_t counter_buttons_pressed = 0;
 static uint8_t combination_pressed[4];
 static uint8_t timer_reached = 0;
 static char pass_key[5] = {'1', '7', '7', '2', '\0'};
+static char new_pin_holder[3][8];
+static char buf[19];
 
 void run_system()
 {
-    char new_pin_holder[3][8];
-    char buf[19];
     uint8_t end_point_reached = 0;
-    start_and_reset_system(&counter_buttons_pressed, combination_pressed, &timer_reached);
+    start_and_reset_system();
     while (1)
     {
         switch (get_system_state())
@@ -35,14 +36,15 @@ void run_system()
         case IDLE:
             start_input_frequnce();
 
-            
+
             if (get_input(buf, sizeof(buf)))
             {
                 prase_commando(buf, new_pin_holder);
-            }
-            if (!valid_check_protocol(new_pin_holder)){
-                uart_puts("Invalid protocol \"NEW PIN\" \r\n");
-                break;
+                if (valid_check_protocol(new_pin_holder)){
+                    uart_puts("Entering Change pin \r\n");
+                    change_pin();
+                    break;
+                }else uart_puts("Unknnow commadno \r\n");
             }
            
             
@@ -93,13 +95,18 @@ void run_system()
             uart_puts("\r\nTIMEOUT !\r\n");
             end_point_reached = 1;
             break;
+
+
+        case CHANGE_PIN:{
+            end_point_reached = 1;
+        }
         default:
             break;
         }
 
         if (end_point_reached && millis_delay(3000))
         {
-            start_and_reset_system(&counter_buttons_pressed, combination_pressed, &timer_reached);
+            start_and_reset_system();
             toggle_idle();
             end_point_reached = 0;
         }
@@ -136,4 +143,18 @@ void start_input_frequnce()
         awit_input();
         uart_puts("\r\ninput frequnce started \r\n");
     }
+}
+
+void start_and_reset_system(){
+    uart_puts("\r\nRESTING\r\n");
+    wait_for_no_key();
+    memset(combination_pressed, 0, 4);
+    counter_buttons_pressed = 0;
+    timer_reached = 0;
+    strcpy(new_pin_holder[0], "\0");
+    strcpy(new_pin_holder[1], "\0");
+    strcpy(new_pin_holder[2], "\0");
+    strcpy(buf, "\0");
+    system_state_idle();
+    uart_puts("\r\nAwiat start frequnce \r\n");
 }

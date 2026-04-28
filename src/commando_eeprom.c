@@ -39,8 +39,6 @@ void prase_commando(char *buf, char new_pin_holder[][8])
         }
         size_tracker++;
         index++;
-        uart_print_u16(size_tracker);
-        uart_puts("\r\n");
 
         if ((size_tracker >= 8 && token_idx == 0) || (size_tracker > 16 && token_idx == 1) || size_tracker > 20)
         {
