@@ -1,5 +1,5 @@
-#ifndef COMMANDO_EEPROM_H
-#define COMMANDO_EEPROM_H
+#ifndef COMMAND_PARSER_H
+#define COMMAND_PARSER_H
 #include <stdio.h>
 #define PROTOCOL_SIZE 8
 #define PIN_SIZE 5

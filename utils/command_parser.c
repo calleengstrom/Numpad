@@ -5,7 +5,7 @@
 #include <avr/eeprom.h>
 #include <string.h>
 #include "../include/uart.h"
-#include "../include/commando_eeprom.h"
+#include "../include/command_parser.h"
 static volatile uint8_t idx;
 #define PROTOCOL_NEW_PIN "NEW PIN"
 
@@ -60,15 +60,3 @@ uint8_t valid_check_protocol(char new_pin_holder[][8])
 }
 
 
-
-    // void save_code_to_eeprom(char *code, size_t pin_size) {
-    //     for (uint8_t i = 0; i <  pin_size ; i++) {
-    //         eeprom_write_byte((i + 0), code[i]); // Skriv till EEPROM från adress 0 till 3
-    //     }
-    // }
-
-    // void read_code_from_eeprom(char *code, size_t pin_size) {
-    //     for (uint8_t i = 0; i <  pin_size ; i++) {
-    //         code[i] = eeprom_read_byte(i + 0); // Läs från samma adress
-    //     }
-    // }

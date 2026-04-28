@@ -8,7 +8,7 @@
 #include <avr/eeprom.h>
 #include <string.h>
 #include "../include/uart.h"
-#include "../include/commando_eeprom.h"
+#include "../include/command_parser.h"
 typedef enum{
     PIN_INVALID,
     PIN_CORRECT,

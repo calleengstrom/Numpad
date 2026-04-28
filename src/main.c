@@ -8,7 +8,7 @@
 #include "../include/millis.h"
 #include "../include/led.h"
 #include "../include/system.h"
-#include "../include/helpers.h"
+#include "../include/command_parser.h"
 #include "../include/system_state.h"
 #include "../include/pin_key.h"
 
