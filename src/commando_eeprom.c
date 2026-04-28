@@ -7,15 +7,13 @@
 #include "../include/uart.h"
 #include "../include/commando_eeprom.h"
 static volatile uint8_t idx;
-static char protocol_new_pin[] = "NEW PIN,";
+#define PROTOCOL_NEW_PIN "NEW PIN"
 
-void prase_eeporm(char *buf)
+void prase_commando(char *buf, char new_pin_holder[][8])
 {
     char *token = buf;
     char *index = buf;
-    char *protocol = NULL;
-    char *old_pin = NULL;
-    char *new_pin = NULL;
+    uint8_t size_tracker = 0;
     uint8_t token_idx = 0;
 
     while (*index != '\0')
@@ -25,11 +23,11 @@ void prase_eeporm(char *buf)
             *index = '\0';
             if (token_idx == 0)
             {
-                protocol = token;
+                strcpy(new_pin_holder[token_idx], token);
             }
             else if (token_idx == 1)
             {
-                old_pin = token;
+                strcpy(new_pin_holder[token_idx], token);
             }
 
             token_idx++;
@@ -37,33 +35,42 @@ void prase_eeporm(char *buf)
         }
         else if (*(index + 1) == '\0' && token_idx == 2)
         {
-            new_pin = token;
+            strcpy(new_pin_holder[token_idx], token);
         }
-
+        size_tracker++;
         index++;
+        uart_print_u16(size_tracker);
+        uart_puts("\r\n");
+
+        if ((size_tracker >= 8 && token_idx == 0) || (size_tracker > 16 && token_idx == 1) || size_tracker > 20)
+        {
+            uart_puts("Too long and or unknow commando \r\n");
+            strcpy(new_pin_holder[0], "");
+            strcpy(new_pin_holder[1], "");
+            strcpy(new_pin_holder[2], "");
+            break;
+        }
     }
-
-    uart_puts("Protocol : ");
-    uart_puts(protocol);
-    uart_puts("\n\r");
-
-    uart_puts("Old pin : ");
-    uart_puts(old_pin);
-    uart_puts("\n\r");
-
-    uart_puts("New pin : ");
-    uart_puts(new_pin);
-    uart_puts("\n\r");
 }
 
-// void save_code_to_eeprom(char *code, size_t pin_size) {
-//     for (uint8_t i = 0; i <  pin_size ; i++) {
-//         eeprom_write_byte((i + 0), code[i]); // Skriv till EEPROM från adress 0 till 3
-//     }
-// }
+uint8_t valid_check_protocol(char new_pin_holder[][8])
+{
 
-// void read_code_from_eeprom(char *code, size_t pin_size) {
-//     for (uint8_t i = 0; i <  pin_size ; i++) {
-//         code[i] = eeprom_read_byte(i + 0); // Läs från samma adress
-//     }
-// }new pin
+    char *protocol = new_pin_holder[0];
+
+    return (strncmp(protocol, PROTOCOL_NEW_PIN, 5) == 0);
+}
+
+// uint8_t
+
+    // void save_code_to_eeprom(char *code, size_t pin_size) {
+    //     for (uint8_t i = 0; i <  pin_size ; i++) {
+    //         eeprom_write_byte((i + 0), code[i]); // Skriv till EEPROM från adress 0 till 3
+    //     }
+    // }
+
+    // void read_code_from_eeprom(char *code, size_t pin_size) {
+    //     for (uint8_t i = 0; i <  pin_size ; i++) {
+    //         code[i] = eeprom_read_byte(i + 0); // Läs från samma adress
+    //     }
+    // }

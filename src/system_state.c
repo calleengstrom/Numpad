@@ -29,6 +29,9 @@ void deny_access()
 {
     system_state = ACCESS_DENIED;
 }
+void change_pin(){
+    system_state = CHANGE_PIN;
+}
 
 SYSTEM_STATE get_system_state()
 {

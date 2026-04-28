@@ -86,3 +86,26 @@ void uart_puts(const char *s)
         uart_putchar(*s++);
     }
 }
+
+void uart_print_u16(uint16_t v)
+{
+    char buf[6];
+    uint8_t i = 0;
+
+    if (v == 0)
+    {
+        uart_tx_byte('0');
+        return;
+    }
+
+    while (v > 0 && i < sizeof(buf) - 1)
+    {
+        buf[i++] = (char)('0' + (v % 10));
+        v /= 10;
+    }
+
+    while (i > 0)
+    {
+        uart_tx_byte((uint8_t)buf[--i]);
+    }
+}

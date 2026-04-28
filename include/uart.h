@@ -12,5 +12,5 @@ char uart_rx_byte(void);
 uint8_t uart_rx_available(void);
 void uart_putchar(char c);
 void uart_puts(const char *s);
-
+void uart_print_u16(uint16_t v);
 #endif

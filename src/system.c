@@ -24,6 +24,7 @@ static char pass_key[5] = {'1', '7', '7', '2', '\0'};
 
 void run_system()
 {
+    char new_pin_holder[3][8];
     char buf[19];
     uint8_t end_point_reached = 0;
     start_and_reset_system(&counter_buttons_pressed, combination_pressed, &timer_reached);
@@ -33,11 +34,18 @@ void run_system()
         {
         case IDLE:
             start_input_frequnce();
+
+            
             if (get_input(buf, sizeof(buf)))
             {
-                prase_eeporm(buf);
+                prase_commando(buf, new_pin_holder);
             }
-
+            if (!valid_check_protocol(new_pin_holder)){
+                uart_puts("Invalid protocol \"NEW PIN\" \r\n");
+                break;
+            }
+           
+            
             break;
 
         case INPUT_AWIT:
@@ -53,7 +61,6 @@ void run_system()
             else if (pin_state == PIN_INVALID)
             {
                 uart_puts("\r\nInvalid pin\r\n");
-
                 deny_access();
                 break;
             }
