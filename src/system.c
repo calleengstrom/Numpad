@@ -54,7 +54,7 @@ void run_system()
 
         case INPUT_AWIT:
 
-            toggle_input_awit();
+            led_blink_red();
             pin_state = pin_input_frequnce_state(key_pressed());
             if (PIN_CORRECT == pin_state)
             {
@@ -83,7 +83,7 @@ void run_system()
             // ACCESS_GRANTED  *************************************************************************** ACCESS_GRANTED/
 
         case ACCESS_GRANTED:
-            toggle_access();
+            led_green_on();
             uart_puts("\r\nACCESS GRANTED !\r\n");
             end_point_reached = 1;
             break;
@@ -91,7 +91,7 @@ void run_system()
             // ACCESS_DENIED  *************************************************************************** CCESS_DENIED/
 
         case ACCESS_DENIED:
-            toggle_denied();
+            led_red_and_green_off();
             uart_puts("\r\nACCESS DENIED !\r\n");
             end_point_reached = 1;
             break;
@@ -99,7 +99,7 @@ void run_system()
             // TIME_OUT  *************************************************************************** TIME_OUT/
 
         case TIME_OUT:
-            toggle_timeout();
+            led_red_and_green_on();
             uart_puts("\r\nTIMEOUT !\r\n");
             end_point_reached = 1;
             break;
@@ -108,6 +108,7 @@ void run_system()
 
         case CHANGE_PIN:
         {
+            led_red_and_green_off();
             if (PIN_CORRECT == check_current_pin(new_pin_holder[1]))
             {
                 uart_puts("correct key \r\n");
@@ -127,7 +128,7 @@ void run_system()
         if (end_point_reached && millis_delay(3000))
         {
             start_and_reset_system();
-            toggle_idle();
+            led_red_on();
             end_point_reached = 0;
         }
     }
@@ -139,7 +140,7 @@ PIN_STATE pin_input_frequnce_state(uint8_t key_pressed)
     {
         combination_pressed[counter_buttons_pressed] = key_pressed;
         counter_buttons_pressed++;
-        button_pressed_toggle();
+        led_toggle_green();
         uart_puts("\r\nButton pressed\r\n");
     }
 

@@ -20,7 +20,7 @@ void led_init()
 
 //************************************ */
 
-void button_pressed_toggle()
+void led_toggle_green()
 {
     timer_now = millis_get();
 
@@ -33,7 +33,7 @@ void button_pressed_toggle()
 }
 
 //************************************ */
-void toggle_access()
+void led_green_on()
 {
     PORTB |= (1 << GREEN_LED);
     PORTB &= ~(1 << RED_LED);
@@ -41,7 +41,7 @@ void toggle_access()
 
 //************************************ */
 
-void toggle_denied()
+void led_red_and_green_off()
 {
     PORTB &= ~(1 << GREEN_LED);
     PORTB &= ~(1 << RED_LED);
@@ -49,13 +49,13 @@ void toggle_denied()
 }
 
 //************************************ */
-void toggle_idle()
+void led_red_on()
 {
     PORTB |= (1 << RED_LED);
     PORTB &= ~(1 << GREEN_LED);
 }
 //************************************ */
-void toggle_input_awit()
+void led_blink_red()
 {
     timer_now = millis_get();
     if (timer_now - timer_start > 500)
@@ -66,7 +66,7 @@ void toggle_input_awit()
 }
 //************************************ */
 
-void toggle_timeout()
+void led_red_and_green_on()
 {
     PORTB |= (1 << RED_LED);
     PORTB |= (1 << GREEN_LED);

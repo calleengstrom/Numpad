@@ -35,7 +35,6 @@ void prase_commando(char *buf, char new_pin_holder[][8])
         }
         else if (*(index + 1) == '\0' && token_idx == 2)
         {
-            *index++ = '\0';
             strcpy(new_pin_holder[token_idx], token);
         }
         size_tracker++;

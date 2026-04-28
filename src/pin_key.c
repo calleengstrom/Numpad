@@ -4,7 +4,7 @@
 #include <avr/power.h>
 #include <util/atomic.h>
 #include "../include/pin_key.h"
-#define EEPROM_PIN_ADDRES 0
+static uint8_t *EEPROM_PIN_ADDRES = 0x00;
 static char current_pin[5];
 
 void pin_init(char *init_pass_code)
@@ -25,6 +25,7 @@ uint8_t valid_check_new_pin(char *new_pin)
     }
     if (strlen(new_pin) != 4)
     {
+        uart_print_u16(strlen(new_pin));
         uart_puts("To long pin must be 4 digits \r\n");
         return 0;
     }
@@ -34,8 +35,9 @@ uint8_t valid_check_new_pin(char *new_pin)
 
 void uppdate_pin(char *new_pin)
 {
-    strncpy(current_pin, new_pin, 4);
-    //SKA BLI -> save_pin_to_eeprom
+    //strncpy(current_pin, new_pin, 4);
+    save_pin_to_eeprom(new_pin,5);
+    read_pin_from_eeprom(current_pin,5);
 }
 
 uint8_t check_current_pin(char *input_pin)
@@ -47,19 +49,19 @@ uint8_t check_current_pin(char *input_pin)
     return PIN_INVALID;
 }
 
-// void save_pin_to_eeprom(char *code, size_t pin_size)
-// {
+void save_pin_to_eeprom(char *code, size_t pin_size)
+{
 
-//     for (uint8_t i = 0; i < pin_size; i++)
-//     {
-//         eeprom_write_byte((EEPROM_PIN_ADDRES + i), code[i]);
-//     }
-// }
+    for (uint8_t i = 0; i < pin_size; i++)
+    {
+        eeprom_write_byte((EEPROM_PIN_ADDRES + i), code[i]);
+    }
+}
 
-// void read_pin_from_eeprom(char *code, size_t pin_size)
-// {
-//     for (uint8_t i = 0; i < pin_size; i++)
-//     {
-//         code[i] = eeprom_read_byte(EEPROM_PIN_ADDRES + i);
-//     }
-// }
+void read_pin_from_eeprom(char *code, size_t pin_size)
+{
+    for (uint8_t i = 0; i < pin_size; i++)
+    {
+        code[i] = eeprom_read_byte(EEPROM_PIN_ADDRES + i);
+    }
+}

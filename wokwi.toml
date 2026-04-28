@@ -1,4 +1,4 @@
 [wokwi]
 version=1
-firmware = "main.hex"
-elf = "main.elf"
+firmware = "build/main.hex"
+elf = "build/main.elf"
