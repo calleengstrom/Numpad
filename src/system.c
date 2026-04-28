@@ -15,8 +15,6 @@
 #include "../include/pin_key.h"
 #define INPUT_TIMER_LIMIT 5000
 PIN_STATE pin_state = WAITING;
-
-// emporm comando_new_pin -> "NEW PIN,1772,1337"
 static millis_t input_timer = 0;
 static uint8_t counter_buttons_pressed = 0;
 static char combination_pressed[5];
@@ -26,13 +24,14 @@ static char buf[19];
 
 void run_system()
 {
-    
+
     uint8_t end_point_reached = 0;
     start_and_reset_system();
     while (1)
     {
         switch (get_system_state())
         {
+            // IDLE  *************************************************************************** IDLE/
         case IDLE:
             start_input_frequnce();
 
@@ -50,6 +49,8 @@ void run_system()
             }
 
             break;
+
+            // INPUT_AWIT  *************************************************************************** INPUT_AWIT/
 
         case INPUT_AWIT:
 
@@ -79,11 +80,15 @@ void run_system()
             }
             break;
 
+            // ACCESS_GRANTED  *************************************************************************** ACCESS_GRANTED/
+
         case ACCESS_GRANTED:
             toggle_access();
             uart_puts("\r\nACCESS GRANTED !\r\n");
             end_point_reached = 1;
             break;
+
+            // ACCESS_DENIED  *************************************************************************** CCESS_DENIED/
 
         case ACCESS_DENIED:
             toggle_denied();
@@ -91,11 +96,15 @@ void run_system()
             end_point_reached = 1;
             break;
 
+            // TIME_OUT  *************************************************************************** TIME_OUT/
+
         case TIME_OUT:
             toggle_timeout();
             uart_puts("\r\nTIMEOUT !\r\n");
             end_point_reached = 1;
             break;
+
+            // CHANGE_PIN  *************************************************************************** CHANGE_PIN/
 
         case CHANGE_PIN:
         {
@@ -106,7 +115,10 @@ void run_system()
                     uppdate_pin(new_pin_holder[2]);
             }
             end_point_reached = 1;
+            break;
         }
+
+            // default  *************************************************************************** default/
         default:
             break;
         }
@@ -131,7 +143,7 @@ PIN_STATE pin_input_frequnce_state(uint8_t key_pressed)
     }
 
     if (counter_buttons_pressed == 4)
-    {   
+    {
         combination_pressed[counter_buttons_pressed] = '\0';
         pin_state = check_current_pin(combination_pressed);
     }

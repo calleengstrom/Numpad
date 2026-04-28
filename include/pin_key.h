@@ -15,13 +15,13 @@ typedef enum{
     WAITING,
 }PIN_STATE;
 
-PIN_STATE check_pin(char *pass_key , uint8_t *combination_pressed);
-
 
 void pin_init(char *init_pass_code);
+void uppdate_pin(char *new_pin);
 
 uint8_t check_current_pin(char *old_pin_input);
-void uppdate_pin(char *new_pin);
 uint8_t valid_check_new_pin(char *new_pin);
 
+void save_pin_to_eeprom(char *code, size_t pin_size);
+void read_pin_from_eeprom(char *code, size_t pin_size);
 #endif

@@ -16,7 +16,7 @@ int main(void)
 {
     keypad_init();
 
-    /* 9600 baud vid 16 MHz */
+
     uart_init();
     millis_init();
     led_init();
