@@ -46,19 +46,19 @@ uint8_t check_current_pin(char *input_pin)
     return PIN_INVALID;
 }
 
-void save_pin_to_eeprom(char *code, size_t pin_size)
-{
+// void save_pin_to_eeprom(char *code, size_t pin_size)
+// {
 
-    for (uint8_t i = 0; i < pin_size; i++)
-    {
-        eeprom_write_byte((i + 0), code[i]);
-    }
-}
+//     for (uint8_t i = 0; i < pin_size; i++)
+//     {
+//         eeprom_write_byte((i + 0), code[i]);
+//     }
+// }
 
-void read_pin_from_eeprom(char *code, size_t pin_size)
-{
-    for (uint8_t i = 0; i < pin_size; i++)
-    {
-        code[i] = eeprom_read_byte(i + 0);
-    }
-}
+// void read_pin_from_eeprom(char *code, size_t pin_size)
+// {
+//     for (uint8_t i = 0; i < pin_size; i++)
+//     {
+//         code[i] = eeprom_read_byte(i + 0);
+//     }
+// }
