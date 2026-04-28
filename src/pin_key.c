@@ -4,7 +4,7 @@
 #include <avr/power.h>
 #include <util/atomic.h>
 #include "../include/pin_key.h"
-
+#define EEPROM_PIN_ADDRES 0
 static char current_pin[5];
 
 void pin_init(char *init_pass_code)
@@ -35,6 +35,7 @@ uint8_t valid_check_new_pin(char *new_pin)
 void uppdate_pin(char *new_pin)
 {
     strncpy(current_pin, new_pin, 4);
+    //SKA BLI -> save_pin_to_eeprom
 }
 
 uint8_t check_current_pin(char *input_pin)
@@ -51,7 +52,7 @@ uint8_t check_current_pin(char *input_pin)
 
 //     for (uint8_t i = 0; i < pin_size; i++)
 //     {
-//         eeprom_write_byte((i + 0), code[i]);
+//         eeprom_write_byte((EEPROM_PIN_ADDRES + i), code[i]);
 //     }
 // }
 
@@ -59,6 +60,6 @@ uint8_t check_current_pin(char *input_pin)
 // {
 //     for (uint8_t i = 0; i < pin_size; i++)
 //     {
-//         code[i] = eeprom_read_byte(i + 0);
+//         code[i] = eeprom_read_byte(EEPROM_PIN_ADDRES + i);
 //     }
 // }

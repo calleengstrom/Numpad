@@ -114,6 +114,7 @@ void run_system()
                 if (valid_check_new_pin(new_pin_holder[2]))
                     uppdate_pin(new_pin_holder[2]);
             }
+            else uart_puts("ERROR ! INVALID INPUT \r\n");
             end_point_reached = 1;
             break;
         }
@@ -172,9 +173,9 @@ void start_and_reset_system()
     memset(combination_pressed, 0, 4);
     counter_buttons_pressed = 0;
     timer_reached = 0;
-    strcpy(new_pin_holder[0], "\0");
-    strcpy(new_pin_holder[1], "\0");
-    strcpy(new_pin_holder[2], "\0");
+    memset(new_pin_holder[0], '\0', 8);
+    memset(new_pin_holder[1], '\0', 8);
+    memset(new_pin_holder[2], '\0', 8);
     strcpy(buf, "\0");
     system_state_idle();
     uart_puts("\r\nAwiat start frequnce \r\n");
