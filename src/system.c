@@ -12,7 +12,7 @@
 #include "../include/system_state.h"
 #include "../include/terminal.h"
 #include "../include/commando_eeprom.h"
-
+#include "../include/pin_key.h"
 #define INPUT_TIMER_LIMIT 5000
 PIN_STATE pin_state = WAITING;
 
