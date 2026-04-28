@@ -36,18 +36,19 @@ void run_system()
         case IDLE:
             start_input_frequnce();
 
-
             if (get_input(buf, sizeof(buf)))
             {
                 prase_commando(buf, new_pin_holder);
-                if (valid_check_protocol(new_pin_holder)){
+                if (valid_check_protocol(new_pin_holder))
+                {
                     uart_puts("Entering Change pin \r\n");
                     change_pin();
                     break;
-                }else uart_puts("Unknnow commadno \r\n");
+                }
+                else
+                    uart_puts("Unknnow commadno \r\n");
             }
-           
-            
+
             break;
 
         case INPUT_AWIT:
@@ -96,8 +97,14 @@ void run_system()
             end_point_reached = 1;
             break;
 
-
-        case CHANGE_PIN:{
+        case CHANGE_PIN:
+        {
+            if (check_old_pin(new_pin_holder[1], pass_key))
+            {
+                uart_puts("correct key \r\n");
+                if (valid_check_new_pin(new_pin_holder[2]))
+                    uppdate_pin(new_pin_holder[2], pass_key);
+            }
             end_point_reached = 1;
         }
         default:
@@ -145,7 +152,8 @@ void start_input_frequnce()
     }
 }
 
-void start_and_reset_system(){
+void start_and_reset_system()
+{
     uart_puts("\r\nRESTING\r\n");
     wait_for_no_key();
     memset(combination_pressed, 0, 4);

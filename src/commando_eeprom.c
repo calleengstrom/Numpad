@@ -59,7 +59,36 @@ uint8_t valid_check_protocol(char new_pin_holder[][8])
     return (strncmp(protocol, PROTOCOL_NEW_PIN, 5) == 0);
 }
 
-// uint8_t
+uint8_t check_old_pin(char *old_pin_input,char *current_pin){
+    return(strncmp(old_pin_input,current_pin,5) == 0);
+        
+    
+}
+
+uint8_t valid_check_new_pin(char *new_pin){
+    
+    for (size_t i = 0; i < strlen(new_pin); i++)
+    {
+        if (new_pin[i] < '0' || new_pin[i] >  '9')
+        {
+            uart_puts("only digits \r\n");
+            return 0;
+        }
+        
+    } 
+    if (strlen(new_pin) != 4)
+    {
+        uart_puts("To long pin must be 4 digits \r\n");
+        return 0;
+    }
+    uart_puts("Pass key uppdated ! \r\n");
+    return 1;
+}
+
+
+void uppdate_pin(char *new_pin,char *current_pin){
+    strncpy(current_pin,new_pin,5);
+}
 
     // void save_code_to_eeprom(char *code, size_t pin_size) {
     //     for (uint8_t i = 0; i <  pin_size ; i++) {
