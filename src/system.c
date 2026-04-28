@@ -2,6 +2,7 @@
 #include <avr/interrupt.h>
 #include <avr/power.h>
 #include <util/atomic.h>
+#include <avr/eeprom.h>
 #include "../include/keypad.h"
 #include "../include/uart.h"
 #include "../include/millis.h"
@@ -9,27 +10,34 @@
 #include "../include/system.h"
 #include "../include/system_state.h"
 #include "../include/terminal.h"
+#include "../include/commando_eeprom.h"
 
 #define INPUT_TIMER_LIMIT 5000
 PIN_STATE pin_state = WAITING;
+
+// emporm comando_new_pin -> "NEW PIN,1772,1337"
 static millis_t input_timer = 0;
 static uint8_t counter_buttons_pressed = 0;
 static uint8_t combination_pressed[4];
 static uint8_t timer_reached = 0;
-static char pass_key[4] = {'1', '7', '7', '2'};
+static char pass_key[5] = {'1', '7', '7', '2', '\0'};
 
 void run_system()
 {
+    char buf[19];
     uint8_t end_point_reached = 0;
-    start_and_reset_system(&counter_buttons_pressed, combination_pressed,&timer_reached);
+    start_and_reset_system(&counter_buttons_pressed, combination_pressed, &timer_reached);
     while (1)
     {
-
         switch (get_system_state())
         {
         case IDLE:
             start_input_frequnce();
-            
+            if (get_input(buf, sizeof(buf)))
+            {
+                prase_eeporm(buf);
+            }
+
             break;
 
         case INPUT_AWIT:
@@ -50,7 +58,6 @@ void run_system()
                 break;
             }
 
-            
             if ((millis_get() - input_timer) > INPUT_TIMER_LIMIT)
             {
                 timer_reached = 1;
@@ -122,5 +129,4 @@ void start_input_frequnce()
         awit_input();
         uart_puts("\r\ninput frequnce started \r\n");
     }
-
 }
