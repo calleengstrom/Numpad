@@ -14,7 +14,7 @@
 #include "../include/command_parser.h"
 #include "../include/pin_key.h"
 #include "../include/new_pin_holder.h"
-
+#include "../include/protocol.h"
 #define INPUT_TIMER_LIMIT 5000
 PIN_STATE pin_state = WAITING;
 static millis_t input_timer = 0;
@@ -40,12 +40,18 @@ void run_system()
             if (get_input(buf, sizeof(buf)))
             {
                 prase_commando(buf, &new_pin_holder);
-                if (valid_check_protocol(new_pin_holder.protocol))
+                if (PROTOCOL_NEW_PIN == valid_check_protocol(new_pin_holder.protocol))
                 {
                     uart_puts("Entering Change pin \r\n");
-                    change_pin();
+                    set_state_change_pin();
                     break;
                 }
+                else if (PROTOCOL_RESET_1 == valid_check_protocol(new_pin_holder.protocol))
+                {
+                    set_state_reset_pin();
+                    uart_puts("Reset pin \r\n");
+                }
+                
                 else
                     uart_puts("Unknnow commadno \r\n");
             }
@@ -53,7 +59,7 @@ void run_system()
             break;
 
             // INPUT_AWIT  *************************************************************************** INPUT_AWIT/
-
+            
         case INPUT_AWIT:
 
             led_blink_red();
@@ -61,13 +67,13 @@ void run_system()
             if (PIN_CORRECT == pin_state)
             {
                 uart_puts("\r\nCorrect pin\r\n");
-                grant_access();
+                set_state_grant_access();
                 break;
             }
             else if (PIN_INVALID == pin_state)
             {
                 uart_puts("\r\nInvalid pin\r\n");
-                deny_access();
+                set_state_deny_access();
                 break;
             }
 
@@ -78,7 +84,7 @@ void run_system()
             if (WAITING == pin_state && timer_reached)
             {
                 uart_puts("\r\n!TIME OUT REACHED!\r\n");
-                time_out_reached();
+                set_state_time_out();
             }
             break;
 
@@ -122,6 +128,10 @@ void run_system()
             break;
         }
 
+        case RESET_PIN:
+            led_red_and_green_off();
+            reset_pin();
+            end_point_reached =1;
             // default  *************************************************************************** default/
         default:
             break;
@@ -136,6 +146,8 @@ void run_system()
         }
     }
 }
+
+
 
 PIN_STATE pin_input_frequnce_state(uint8_t key_pressed)
 {
@@ -165,7 +177,7 @@ void start_input_frequnce()
     if (key == '*')
     {
         wait_for_no_key();
-        awit_input();
+        set_state_awit_input();
         uart_puts("\r\ninput frequnce started \r\n");
     }
 }
@@ -182,6 +194,6 @@ void start_and_reset_system()
     memset(new_pin_holder.old_pin, '\0', 5);
     memset(new_pin_holder.new_pin, '\0', 5);
     strcpy(buf, "\0");
-    system_state_idle();
+    set_state_idle();
     uart_puts("\r\nAwiat start frequnce \r\n");
 }

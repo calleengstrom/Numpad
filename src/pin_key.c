@@ -52,6 +52,11 @@ uint8_t check_current_pin(char *input_pin)
     return PIN_INVALID;
 }
 
+void reset_pin(){
+    uart_puts("RESET PIN \r\n");
+    save_pin_to_eeprom("1772",5);
+}
+
 void save_pin_to_eeprom(char *code, size_t pin_size)
 {
 

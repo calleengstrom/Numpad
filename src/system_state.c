@@ -6,31 +6,35 @@
 #include "../include/uart.h"
 static volatile SYSTEM_STATE system_state;
 
-void system_state_idle()
+void set_state_idle()
 {
     system_state = IDLE;
 }
 
-void awit_input(){
+void set_state_awit_input(){
     system_state = INPUT_AWIT;
 }
 
-void time_out_reached()
+void set_state_time_out()
 {
     system_state = TIME_OUT;
 }
 
-void grant_access()
+void set_state_grant_access()
 {
     system_state = ACCESS_GRANTED;
 }
 
-void deny_access()
+void set_state_deny_access()
 {
     system_state = ACCESS_DENIED;
 }
-void change_pin(){
+void set_state_change_pin(){
     system_state = CHANGE_PIN;
+}
+
+void set_state_reset_pin(){
+    system_state = RESET_PIN;
 }
 
 SYSTEM_STATE get_system_state()

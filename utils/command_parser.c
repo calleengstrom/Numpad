@@ -7,8 +7,6 @@
 #include "../include/uart.h"
 #include "../include/command_parser.h"
 static volatile uint8_t idx;
-#define PROTOCOL_NEW_PIN "NEW PIN"
-
 void prase_commando(char *buf, NEW_PIN_HOLDER *new_pin_holder)
 {
     char *token = buf;
@@ -48,9 +46,5 @@ void prase_commando(char *buf, NEW_PIN_HOLDER *new_pin_holder)
     }
 }
 
-uint8_t valid_check_protocol(char *new_pin)
-{
-    return (strncmp(new_pin, PROTOCOL_NEW_PIN, 6) == 0);
-}
 
 

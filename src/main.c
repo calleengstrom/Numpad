@@ -21,11 +21,13 @@ int main(void)
     millis_init();
     led_init();
     uart_puts("System startat\r\n");
-    system_state_idle();
+    set_state_idle();
     sei();
-    save_pin_to_eeprom("1772",5);
-    char current_pin[5];
-    // read_pin_from_eeprom(current_pin,5);
-    // pin_init(current_pin);
+    char check_pin[5];
+    read_pin_from_eeprom(check_pin,5);
+    if (!valid_check_new_pin(check_pin))
+    {
+        reset_pin();
+    }
     run_system();
 }

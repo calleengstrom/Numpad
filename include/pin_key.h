@@ -16,7 +16,7 @@ typedef enum{
 }PIN_STATE;
 
 
-void pin_init(char *init_pass_code);
+void reset_pin();
 void uppdate_pin(char *new_pin);
 
 uint8_t check_current_pin(char *old_pin_input);
