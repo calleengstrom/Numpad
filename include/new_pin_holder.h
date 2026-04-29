@@ -1,3 +1,5 @@
+#ifndef NEW_PIN_HOLDER_H
+#define NEW_PIN_HOLDER_H
 typedef struct
 {
     char protocol[8];
@@ -5,3 +7,4 @@ typedef struct
     char new_pin[5];
 
 }NEW_PIN_HOLDER;
+#endif

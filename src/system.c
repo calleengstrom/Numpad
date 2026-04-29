@@ -13,13 +13,15 @@
 #include "../include/terminal.h"
 #include "../include/command_parser.h"
 #include "../include/pin_key.h"
+#include "../include/new_pin_holder.h"
+
 #define INPUT_TIMER_LIMIT 5000
 PIN_STATE pin_state = WAITING;
 static millis_t input_timer = 0;
 static uint8_t counter_buttons_pressed = 0;
 static char combination_pressed[5];
 static uint8_t timer_reached = 0;
-static char new_pin_holder[3][8];
+NEW_PIN_HOLDER new_pin_holder;
 static char buf[19];
 
 void run_system()
@@ -37,8 +39,8 @@ void run_system()
 
             if (get_input(buf, sizeof(buf)))
             {
-                prase_commando(buf, new_pin_holder);
-                if (valid_check_protocol(new_pin_holder))
+                prase_commando(buf, &new_pin_holder);
+                if (valid_check_protocol(new_pin_holder.protocol))
                 {
                     uart_puts("Entering Change pin \r\n");
                     change_pin();
@@ -109,11 +111,11 @@ void run_system()
         case CHANGE_PIN:
         {
             led_red_and_green_off();
-            if (PIN_CORRECT == check_current_pin(new_pin_holder[1]))
+            if (PIN_CORRECT == check_current_pin(new_pin_holder.old_pin))
             {
                 uart_puts("correct key \r\n");
-                if (valid_check_new_pin(new_pin_holder[2]))
-                    uppdate_pin(new_pin_holder[2]);
+                if (valid_check_new_pin(new_pin_holder.new_pin))
+                    uppdate_pin(new_pin_holder.new_pin);
             }
             else uart_puts("ERROR ! INVALID INPUT \r\n");
             end_point_reached = 1;
@@ -176,9 +178,9 @@ void start_and_reset_system()
     memset(combination_pressed, 0, 4);
     counter_buttons_pressed = 0;
     timer_reached = 0;
-    memset(new_pin_holder[0], '\0', 8);
-    memset(new_pin_holder[1], '\0', 8);
-    memset(new_pin_holder[2], '\0', 8);
+    memset(new_pin_holder.protocol, '\0', 8);
+    memset(new_pin_holder.old_pin, '\0', 5);
+    memset(new_pin_holder.new_pin, '\0', 5);
     strcpy(buf, "\0");
     system_state_idle();
     uart_puts("\r\nAwiat start frequnce \r\n");

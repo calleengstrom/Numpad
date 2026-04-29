@@ -9,7 +9,7 @@
 static volatile uint8_t idx;
 #define PROTOCOL_NEW_PIN "NEW PIN"
 
-void prase_commando(char *buf, char new_pin_holder[][8])
+void prase_commando(char *buf, NEW_PIN_HOLDER *new_pin_holder)
 {
     char *token = buf;
     char *index = buf;
@@ -23,11 +23,11 @@ void prase_commando(char *buf, char new_pin_holder[][8])
             *index = '\0';
             if (token_idx == 0)
             {
-                strcpy(new_pin_holder[token_idx], token);
+                strcpy(new_pin_holder->protocol, token);
             }
             else if (token_idx == 1)
             {
-                strcpy(new_pin_holder[token_idx], token);
+                strcpy(new_pin_holder->old_pin, token);
             }
 
             token_idx++;
@@ -35,7 +35,7 @@ void prase_commando(char *buf, char new_pin_holder[][8])
         }
         else if (*(index + 1) == '\0' && token_idx == 2)
         {
-            strcpy(new_pin_holder[token_idx], token);
+            strcpy(new_pin_holder->new_pin, token);
         }
         size_tracker++;
         index++;
@@ -48,12 +48,9 @@ void prase_commando(char *buf, char new_pin_holder[][8])
     }
 }
 
-uint8_t valid_check_protocol(char new_pin_holder[][8])
+uint8_t valid_check_protocol(char *new_pin)
 {
-
-    char *protocol = new_pin_holder[0];
-
-    return (strncmp(protocol, PROTOCOL_NEW_PIN, 6) == 0);
+    return (strncmp(new_pin, PROTOCOL_NEW_PIN, 6) == 0);
 }
 
 
