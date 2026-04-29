@@ -5,12 +5,12 @@
 #include <util/atomic.h>
 #include "../include/pin_key.h"
 static uint8_t *EEPROM_PIN_ADDRES = 0x00;
-static char current_pin[5];
 
-void pin_init(char *init_pass_code)
-{
-    strcpy(current_pin, init_pass_code);
-}
+
+// void pin_init(char *init_pass_code)
+// {
+//     strcpy(current_pin, init_pass_code);
+// }
 
 uint8_t valid_check_new_pin(char *new_pin)
 {
@@ -35,15 +35,18 @@ uint8_t valid_check_new_pin(char *new_pin)
 
 void uppdate_pin(char *new_pin)
 {
-    //strncpy(current_pin, new_pin, 4);
+    
     save_pin_to_eeprom(new_pin,5);
-    read_pin_from_eeprom(current_pin,5);
+    
 }
 
 uint8_t check_current_pin(char *input_pin)
 {
+    char current_pin[5];
+    read_pin_from_eeprom(current_pin,5);
     if (memcmp(input_pin, current_pin, 4) == 0)
     {
+        memset(current_pin, '\0', 5);
         return PIN_CORRECT;
     }
     return PIN_INVALID;

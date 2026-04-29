@@ -125,11 +125,12 @@ void run_system()
             break;
         }
 
-        if (end_point_reached && millis_delay(3000))
+        if (end_point_reached)
         {
             start_and_reset_system();
             led_red_on();
             end_point_reached = 0;
+            
         }
     }
 }
@@ -170,6 +171,7 @@ void start_input_frequnce()
 void start_and_reset_system()
 {
     uart_puts("\r\nRESTING\r\n");
+    millis_delay(3000);
     wait_for_no_key();
     memset(combination_pressed, 0, 4);
     counter_buttons_pressed = 0;

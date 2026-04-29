@@ -25,7 +25,7 @@ int main(void)
     sei();
     save_pin_to_eeprom("1772",5);
     char current_pin[5];
-    read_pin_from_eeprom(current_pin,5);
-    pin_init(current_pin);
+    // read_pin_from_eeprom(current_pin,5);
+    // pin_init(current_pin);
     run_system();
 }

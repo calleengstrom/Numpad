@@ -18,7 +18,7 @@ void prase_commando(char *buf, char new_pin_holder[][8])
 
     while (*index != '\0')
     {
-        if (*index == ',')
+        if (*index == ';')
         {
             *index = '\0';
             if (token_idx == 0)
@@ -43,9 +43,6 @@ void prase_commando(char *buf, char new_pin_holder[][8])
         if ((size_tracker >= 8 && token_idx == 0) || (size_tracker > 16 && token_idx == 1) || size_tracker > 20)
         {
             uart_puts("Too long and or unknow commando \r\n");
-            strcpy(new_pin_holder[0], "");
-            strcpy(new_pin_holder[1], "");
-            strcpy(new_pin_holder[2], "");
             break;
         }
     }
@@ -56,7 +53,7 @@ uint8_t valid_check_protocol(char new_pin_holder[][8])
 
     char *protocol = new_pin_holder[0];
 
-    return (strncmp(protocol, PROTOCOL_NEW_PIN, 5) == 0);
+    return (strncmp(protocol, PROTOCOL_NEW_PIN, 6) == 0);
 }
 
 
