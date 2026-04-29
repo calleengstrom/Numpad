@@ -37,11 +37,20 @@ An AVR-based numpad security system implemented on ATMega328p microcontroller. T
 │   ├── system_state.c     # State management
 │   └── terminal.c         # Terminal interface
 ├── utils/                 # Utility functions
-│   ├── command_parser.c   # Command parsing
+│   ├── command_parser.c   # Command parsing (handles PIN change protocol)
 │   ├── millis.c           # Millisecond timing
 │   └── uart.c             # UART communication
 ├── include/               # Header files
-│   ├── *.h                # Function declarations
+│   ├── command_parser.h   # Command parsing declarations
+│   ├── keypad.h           # Keypad function declarations
+│   ├── led.h              # LED control declarations
+│   ├── millis.h           # Millisecond timing declarations
+│   ├── new_pin_holder.h   # PIN holder structure (protocol data)
+│   ├── pin_key.h          # PIN management declarations
+│   ├── system.h           # System state machine declarations
+│   ├── system_state.h     # State management declarations
+│   ├── terminal.h         # Terminal interface declarations
+│   └── uart.h             # UART communication declarations
 ├── build/                 # Build output directory
 ├── Makefile               # Build configuration
 ├── wokwi.toml            # Wokwi simulation config
@@ -77,9 +86,29 @@ Replace `<programmer>` with your programmer type (e.g., arduino, usbasp)
 5. Red LED indicates access denied
 6. Use UART terminal for system commands and monitoring
 
+## Changing PIN via UART
+
+The system supports changing the PIN through UART commands using a specific protocol. Send commands in the format:
+
+```
+PROTOCOL:OLD_PIN:NEW_PIN
+```
+
+Where:
+- PROTOCOL: A 7-character protocol identifier
+- OLD_PIN: Current 4-digit PIN
+- NEW_PIN: New 4-digit PIN
+
+Example:
+```
+CHANGE:1772:1234
+```
+
+The system will validate the old PIN and update to the new PIN if valid.
+
 ## Default PIN
 
-The default PIN is set to "1772" in the code. You can change it via EEPROM functions.
+The default PIN is set to "1772" in the code. You can change it via EEPROM functions.- IF no pin is already located in eeporm addr
 
 ## Simulation
 
